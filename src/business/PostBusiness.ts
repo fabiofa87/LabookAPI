@@ -1,6 +1,5 @@
 import { PostDatabase } from "../data/PostDatabase";
-import { UserDatabase } from "../data/UserDatabase";
-import { createPostInputDTO, Post } from "../entities/Post";
+import { createPostInputDTO, getPostByIdInputDTO, Post } from "../entities/Post";
 import { AuthenticationData, Authenticator } from "../services/Authenticator";
 import { IdGenerator } from "../services/IdGenerator";
 
@@ -32,4 +31,22 @@ export class PostBusiness {
         throw new Error(error.sqlMessage || error.message);
     }
 }
+
+    async getPostById(input: getPostByIdInputDTO) {
+        try {
+
+            const post: Post = await new PostDatabase().getPostById(input.id);
+
+            if(!post) {
+                throw new Error("Post not found.");
+            }
+
+            return post;
+        }
+        catch(error: any) {
+            throw new Error(error.sqlMessage || error.message);
+        }
+    } 
+    
+    
 }

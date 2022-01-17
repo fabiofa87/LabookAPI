@@ -1,6 +1,6 @@
 import  {Request, Response} from "express";
 import { PostBusiness } from "../business/PostBusiness";
-import { createPostInputDTO } from "../entities/Post";
+import { createPostInputDTO, getPostByIdInputDTO, getPostByIdOutputDTO, Post } from "../entities/Post";
 export class PostController {
     createPost = async (req: Request, res: Response) => {
         try{
@@ -26,5 +26,31 @@ export class PostController {
         }
         
 
+    }
+
+    getPostById = async (req: Request, res: Response) => {
+        try {
+            let message = "Post found.";
+
+            const input: getPostByIdInputDTO = {
+                id: req.params.id
+            }
+            
+            const post: Post = await new PostBusiness().getPostById(input);
+
+            const output: getPostByIdOutputDTO = {
+                photo: post.photo,
+                description: post.description,
+                type: post.type,
+                creationDate: post.creationDate
+            }
+
+            res.status(200).send({message, output})
+        }
+        catch(error: any) {
+            let message =  error.sqlMessage || error.message;
+            res.statusCode = 400;
+            res.send({message})
+        }
     }
 }

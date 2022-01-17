@@ -18,3 +18,26 @@ export interface createPostInputDTO {
     type: POST_TYPES,
     token: string
 }
+
+export interface getPostByIdInputDTO {
+    id: string
+}
+
+export interface getPostByIdOutputDTO {
+    photo: string,
+    description: string,
+    type: POST_TYPES,
+    creationDate: Date
+}
+
+export const toPostModel = (obj: any):  Post => {
+    return {
+        id: obj.id,
+        photo: obj.photo,
+        description: obj.description,
+        type: obj.type,
+        creationDate: obj.creationDate,
+        userId: obj.userId
+    }
+
+}
